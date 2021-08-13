@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heyue.wms.mapper.OutstoreMapper">
+    
+    <resultMap type="Outstore" id="OutstoreResult">
+        <result property="id"    column="id"    />
+        <result property="outOrderId"    column="out_order_id"    />
+        <result property="warehouseId"    column="warehouse_id"    />
+        <result property="shelvesId"    column="shelves_id"    />
+        <result property="locationId"    column="location_id"    />
+        <result property="transportUserId"    column="transport_user_id"    />
+        <result property="checkUserId"    column="check_user_id"    />
+        <result property="areaId"    column="area_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="transportTime"    column="transport_time"    />
+        <result property="checkTime"    column="check_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectOutstoreVo">
+        select id, out_order_id, warehouse_id, shelves_id, location_id, transport_user_id, check_user_id, area_id, create_time, transport_time, check_time, update_time from wms_outstore
+    </sql>
+
+    <select id="selectOutstoreList" parameterType="Outstore" resultMap="OutstoreResult">
+        <include refid="selectOutstoreVo"/>
+        <where>  
+            <if test="outOrderId != null "> and out_order_id = #{outOrderId}</if>
+            <if test="warehouseId != null "> and warehouse_id = #{warehouseId}</if>
+            <if test="shelvesId != null "> and shelves_id = #{shelvesId}</if>
+            <if test="locationId != null "> and location_id = #{locationId}</if>
+        </where>
+    </select>
+    
+    <select id="selectOutstoreById" parameterType="Long" resultMap="OutstoreResult">
+        <include refid="selectOutstoreVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOutstore" parameterType="Outstore" useGeneratedKeys="true" keyProperty="id">
+        insert into wms_outstore
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="outOrderId != null">out_order_id,</if>
+            <if test="warehouseId != null">warehouse_id,</if>
+            <if test="shelvesId != null">shelves_id,</if>
+            <if test="locationId != null">location_id,</if>
+            <if test="transportUserId != null">transport_user_id,</if>
+            <if test="checkUserId != null">check_user_id,</if>
+            <if test="areaId != null">area_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="transportTime != null">transport_time,</if>
+            <if test="checkTime != null">check_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="outOrderId != null">#{outOrderId},</if>
+            <if test="warehouseId != null">#{warehouseId},</if>
+            <if test="shelvesId != null">#{shelvesId},</if>
+            <if test="locationId != null">#{locationId},</if>
+            <if test="transportUserId != null">#{transportUserId},</if>
+            <if test="checkUserId != null">#{checkUserId},</if>
+            <if test="areaId != null">#{areaId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="transportTime != null">#{transportTime},</if>
+            <if test="checkTime != null">#{checkTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOutstore" parameterType="Outstore">
+        update wms_outstore
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="outOrderId != null">out_order_id = #{outOrderId},</if>
+            <if test="warehouseId != null">warehouse_id = #{warehouseId},</if>
+            <if test="shelvesId != null">shelves_id = #{shelvesId},</if>
+            <if test="locationId != null">location_id = #{locationId},</if>
+            <if test="transportUserId != null">transport_user_id = #{transportUserId},</if>
+            <if test="checkUserId != null">check_user_id = #{checkUserId},</if>
+            <if test="areaId != null">area_id = #{areaId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="transportTime != null">transport_time = #{transportTime},</if>
+            <if test="checkTime != null">check_time = #{checkTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOutstoreById" parameterType="Long">
+        delete from wms_outstore where id = #{id}
+    </delete>
+
+    <delete id="deleteOutstoreByIds" parameterType="String">
+        delete from wms_outstore where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

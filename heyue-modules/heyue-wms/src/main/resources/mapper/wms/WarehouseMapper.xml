@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heyue.wms.mapper.WarehouseMapper">
+    
+    <resultMap type="Warehouse" id="WarehouseResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="type"    column="type"    />
+        <result property="storeType"    column="store_type"    />
+        <result property="remark"    column="remark"    />
+        <result property="userId"    column="user_id"    />
+        <result property="sensorIds"    column="sensor_ids"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectWarehouseVo">
+        select id, name, type, store_type, remark, user_id, sensor_ids, status from wms_warehouse
+    </sql>
+
+    <select id="selectWarehouseList" parameterType="Warehouse" resultMap="WarehouseResult">
+        <include refid="selectWarehouseVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectWarehouseById" parameterType="Long" resultMap="WarehouseResult">
+        <include refid="selectWarehouseVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWarehouse" parameterType="Warehouse" useGeneratedKeys="true" keyProperty="id">
+        insert into wms_warehouse
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="storeType != null and storeType != ''">store_type,</if>
+            <if test="remark != null">remark,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="sensorIds != null">sensor_ids,</if>
+            <if test="status != null and status != ''">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="storeType != null and storeType != ''">#{storeType},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="sensorIds != null">#{sensorIds},</if>
+            <if test="status != null and status != ''">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWarehouse" parameterType="Warehouse">
+        update wms_warehouse
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="storeType != null and storeType != ''">store_type = #{storeType},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="sensorIds != null">sensor_ids = #{sensorIds},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWarehouseById" parameterType="Long">
+        delete from wms_warehouse where id = #{id}
+    </delete>
+
+    <delete id="deleteWarehouseByIds" parameterType="String">
+        delete from wms_warehouse where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

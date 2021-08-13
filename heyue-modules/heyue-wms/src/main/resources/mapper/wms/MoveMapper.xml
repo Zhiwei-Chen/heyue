@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heyue.wms.mapper.MoveMapper">
+    
+    <resultMap type="Move" id="MoveResult">
+        <result property="id"    column="id"    />
+        <result property="moveOrderId"    column="move_order_id"    />
+        <result property="warehouseIdBg"    column="warehouse_id_bg"    />
+        <result property="warehouseIdEnd"    column="warehouse_id_end"    />
+        <result property="shelvesIdBg"    column="shelves_id_bg"    />
+        <result property="shelvesIdEnd"    column="shelves_id_end"    />
+        <result property="locationIdBg"    column="location_id_bg"    />
+        <result property="locationIdEnd"    column="location_id_end"    />
+        <result property="cargoOwnerUserIdBg"    column="cargo_owner_user_id_bg"    />
+        <result property="cargoOwnerUserIdEnd"    column="cargo_owner_user_id_end"    />
+        <result property="userId"    column="user_id"    />
+        <result property="areaIdBg"    column="area_id_bg"    />
+        <result property="areaIdEnd"    column="area_id_end"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectMoveVo">
+        select id, move_order_id, warehouse_id_bg, warehouse_id_end, shelves_id_bg, shelves_id_end, location_id_bg, location_id_end, cargo_owner_user_id_bg, cargo_owner_user_id_end, user_id, area_id_bg, area_id_end, update_time from wms_move
+    </sql>
+
+    <select id="selectMoveList" parameterType="Move" resultMap="MoveResult">
+        <include refid="selectMoveVo"/>
+        <where>  
+            <if test="moveOrderId != null "> and move_order_id = #{moveOrderId}</if>
+            <if test="cargoOwnerUserIdBg != null "> and cargo_owner_user_id_bg = #{cargoOwnerUserIdBg}</if>
+            <if test="cargoOwnerUserIdEnd != null "> and cargo_owner_user_id_end = #{cargoOwnerUserIdEnd}</if>
+        </where>
+    </select>
+    
+    <select id="selectMoveById" parameterType="Long" resultMap="MoveResult">
+        <include refid="selectMoveVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertMove" parameterType="Move" useGeneratedKeys="true" keyProperty="id">
+        insert into wms_move
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="moveOrderId != null">move_order_id,</if>
+            <if test="warehouseIdBg != null">warehouse_id_bg,</if>
+            <if test="warehouseIdEnd != null">warehouse_id_end,</if>
+            <if test="shelvesIdBg != null">shelves_id_bg,</if>
+            <if test="shelvesIdEnd != null">shelves_id_end,</if>
+            <if test="locationIdBg != null">location_id_bg,</if>
+            <if test="locationIdEnd != null">location_id_end,</if>
+            <if test="cargoOwnerUserIdBg != null">cargo_owner_user_id_bg,</if>
+            <if test="cargoOwnerUserIdEnd != null">cargo_owner_user_id_end,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="areaIdBg != null">area_id_bg,</if>
+            <if test="areaIdEnd != null">area_id_end,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="moveOrderId != null">#{moveOrderId},</if>
+            <if test="warehouseIdBg != null">#{warehouseIdBg},</if>
+            <if test="warehouseIdEnd != null">#{warehouseIdEnd},</if>
+            <if test="shelvesIdBg != null">#{shelvesIdBg},</if>
+            <if test="shelvesIdEnd != null">#{shelvesIdEnd},</if>
+            <if test="locationIdBg != null">#{locationIdBg},</if>
+            <if test="locationIdEnd != null">#{locationIdEnd},</if>
+            <if test="cargoOwnerUserIdBg != null">#{cargoOwnerUserIdBg},</if>
+            <if test="cargoOwnerUserIdEnd != null">#{cargoOwnerUserIdEnd},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="areaIdBg != null">#{areaIdBg},</if>
+            <if test="areaIdEnd != null">#{areaIdEnd},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMove" parameterType="Move">
+        update wms_move
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="moveOrderId != null">move_order_id = #{moveOrderId},</if>
+            <if test="warehouseIdBg != null">warehouse_id_bg = #{warehouseIdBg},</if>
+            <if test="warehouseIdEnd != null">warehouse_id_end = #{warehouseIdEnd},</if>
+            <if test="shelvesIdBg != null">shelves_id_bg = #{shelvesIdBg},</if>
+            <if test="shelvesIdEnd != null">shelves_id_end = #{shelvesIdEnd},</if>
+            <if test="locationIdBg != null">location_id_bg = #{locationIdBg},</if>
+            <if test="locationIdEnd != null">location_id_end = #{locationIdEnd},</if>
+            <if test="cargoOwnerUserIdBg != null">cargo_owner_user_id_bg = #{cargoOwnerUserIdBg},</if>
+            <if test="cargoOwnerUserIdEnd != null">cargo_owner_user_id_end = #{cargoOwnerUserIdEnd},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="areaIdBg != null">area_id_bg = #{areaIdBg},</if>
+            <if test="areaIdEnd != null">area_id_end = #{areaIdEnd},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMoveById" parameterType="Long">
+        delete from wms_move where id = #{id}
+    </delete>
+
+    <delete id="deleteMoveByIds" parameterType="String">
+        delete from wms_move where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

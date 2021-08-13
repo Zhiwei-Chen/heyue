@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.heyue.system.api.factory.RemoteUserFallbackFactory,\
+  com.heyue.system.api.factory.RemoteLogFallbackFactory, \
+  com.heyue.system.api.factory.RemoteFileFallbackFactory

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heyue.wms.mapper.WmsOrderMapper">
+    
+    <resultMap type="WmsOrder" id="WmsOrderResult">
+        <result property="id"    column="id"    />
+        <result property="userOrderDetailId"    column="user_order_detail_id"    />
+        <result property="inOrderId"    column="in_order_id"    />
+        <result property="outOrderId"    column="out_order_id"    />
+        <result property="moveOrderId"    column="move_order_id"    />
+        <result property="cargoOwnerUserId"    column="cargo_owner_user_id"    />
+        <result property="status"    column="status"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectWmsOrderVo">
+        select id, user_order_detail_id, in_order_id, out_order_id, move_order_id, cargo_owner_user_id, status, update_time from wms_order
+    </sql>
+
+    <select id="selectWmsOrderList" parameterType="WmsOrder" resultMap="WmsOrderResult">
+        <include refid="selectWmsOrderVo"/>
+        <where>  
+            <if test="userOrderDetailId != null "> and user_order_detail_id = #{userOrderDetailId}</if>
+            <if test="inOrderId != null "> and in_order_id = #{inOrderId}</if>
+            <if test="outOrderId != null "> and out_order_id = #{outOrderId}</if>
+            <if test="moveOrderId != null "> and move_order_id = #{moveOrderId}</if>
+            <if test="cargoOwnerUserId != null "> and cargo_owner_user_id = #{cargoOwnerUserId}</if>
+        </where>
+    </select>
+    
+    <select id="selectWmsOrderById" parameterType="Long" resultMap="WmsOrderResult">
+        <include refid="selectWmsOrderVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWmsOrder" parameterType="WmsOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into wms_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userOrderDetailId != null">user_order_detail_id,</if>
+            <if test="inOrderId != null">in_order_id,</if>
+            <if test="outOrderId != null">out_order_id,</if>
+            <if test="moveOrderId != null">move_order_id,</if>
+            <if test="cargoOwnerUserId != null">cargo_owner_user_id,</if>
+            <if test="status != null">status,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userOrderDetailId != null">#{userOrderDetailId},</if>
+            <if test="inOrderId != null">#{inOrderId},</if>
+            <if test="outOrderId != null">#{outOrderId},</if>
+            <if test="moveOrderId != null">#{moveOrderId},</if>
+            <if test="cargoOwnerUserId != null">#{cargoOwnerUserId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWmsOrder" parameterType="WmsOrder">
+        update wms_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userOrderDetailId != null">user_order_detail_id = #{userOrderDetailId},</if>
+            <if test="inOrderId != null">in_order_id = #{inOrderId},</if>
+            <if test="outOrderId != null">out_order_id = #{outOrderId},</if>
+            <if test="moveOrderId != null">move_order_id = #{moveOrderId},</if>
+            <if test="cargoOwnerUserId != null">cargo_owner_user_id = #{cargoOwnerUserId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWmsOrderById" parameterType="Long">
+        delete from wms_order where id = #{id}
+    </delete>
+
+    <delete id="deleteWmsOrderByIds" parameterType="String">
+        delete from wms_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

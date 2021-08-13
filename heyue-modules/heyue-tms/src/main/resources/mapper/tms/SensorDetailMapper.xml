@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heyue.tms.mapper.SensorDetailMapper">
+    
+    <resultMap type="SensorDetail" id="SensorDetailResult">
+        <result property="id"    column="id"    />
+        <result property="sensorCode"    column="sensor_code"    />
+        <result property="detectionTime"    column="detection_time"    />
+        <result property="temperature"    column="temperature"    />
+        <result property="humidity"    column="humidity"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="isOpen"    column="is_open"    />
+    </resultMap>
+
+    <sql id="selectSensorDetailVo">
+        select id, sensor_code, detection_time, temperature, humidity, longitude, latitude, is_open from tms_sensor_detail
+    </sql>
+
+    <select id="selectSensorDetailList" parameterType="SensorDetail" resultMap="SensorDetailResult">
+        <include refid="selectSensorDetailVo"/>
+        <where>  
+            <if test="sensorCode != null  and sensorCode != ''"> and sensor_code = #{sensorCode}</if>
+            <if test="params.beginDetectionTime != null and params.beginDetectionTime != '' and params.endDetectionTime != null and params.endDetectionTime != ''"> and detection_time between #{params.beginDetectionTime} and #{params.endDetectionTime}</if>
+            <if test="temperature != null "> and temperature &gt; #{temperature}</if>
+            <if test="humidity != null "> and humidity &gt; #{humidity}</if>
+            <if test="isOpen != null  and isOpen != ''"> and is_open = #{isOpen}</if>
+        </where>
+    </select>
+    
+    <select id="selectSensorDetailById" parameterType="Long" resultMap="SensorDetailResult">
+        <include refid="selectSensorDetailVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSensorDetail" parameterType="SensorDetail" useGeneratedKeys="true" keyProperty="id">
+        insert into tms_sensor_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sensorCode != null and sensorCode != ''">sensor_code,</if>
+            <if test="detectionTime != null">detection_time,</if>
+            <if test="temperature != null">temperature,</if>
+            <if test="humidity != null">humidity,</if>
+            <if test="longitude != null">longitude,</if>
+            <if test="latitude != null">latitude,</if>
+            <if test="isOpen != null and isOpen != ''">is_open,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sensorCode != null and sensorCode != ''">#{sensorCode},</if>
+            <if test="detectionTime != null">#{detectionTime},</if>
+            <if test="temperature != null">#{temperature},</if>
+            <if test="humidity != null">#{humidity},</if>
+            <if test="longitude != null">#{longitude},</if>
+            <if test="latitude != null">#{latitude},</if>
+            <if test="isOpen != null and isOpen != ''">#{isOpen},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSensorDetail" parameterType="SensorDetail">
+        update tms_sensor_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sensorCode != null and sensorCode != ''">sensor_code = #{sensorCode},</if>
+            <if test="detectionTime != null">detection_time = #{detectionTime},</if>
+            <if test="temperature != null">temperature = #{temperature},</if>
+            <if test="humidity != null">humidity = #{humidity},</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="latitude != null">latitude = #{latitude},</if>
+            <if test="isOpen != null and isOpen != ''">is_open = #{isOpen},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSensorDetailById" parameterType="Long">
+        delete from tms_sensor_detail where id = #{id}
+    </delete>
+
+    <delete id="deleteSensorDetailByIds" parameterType="String">
+        delete from tms_sensor_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

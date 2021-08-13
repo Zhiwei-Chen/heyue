@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heyue.wms.mapper.StockHistoryMapper">
+    
+    <resultMap type="StockHistory" id="StockHistoryResult">
+        <result property="id"    column="id"    />
+        <result property="stockId"    column="stock_id"    />
+        <result property="inOrderId"    column="in_order_id"    />
+        <result property="outOrderId"    column="out_order_id"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectStockHistoryVo">
+        select id, stock_id, in_order_id, out_order_id, update_time from wms_stock_history
+    </sql>
+
+    <select id="selectStockHistoryList" parameterType="StockHistory" resultMap="StockHistoryResult">
+        <include refid="selectStockHistoryVo"/>
+        <where>  
+            <if test="stockId != null "> and stock_id = #{stockId}</if>
+            <if test="inOrderId != null "> and in_order_id = #{inOrderId}</if>
+            <if test="outOrderId != null "> and out_order_id = #{outOrderId}</if>
+        </where>
+    </select>
+    
+    <select id="selectStockHistoryById" parameterType="Long" resultMap="StockHistoryResult">
+        <include refid="selectStockHistoryVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertStockHistory" parameterType="StockHistory" useGeneratedKeys="true" keyProperty="id">
+        insert into wms_stock_history
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stockId != null">stock_id,</if>
+            <if test="inOrderId != null">in_order_id,</if>
+            <if test="outOrderId != null">out_order_id,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stockId != null">#{stockId},</if>
+            <if test="inOrderId != null">#{inOrderId},</if>
+            <if test="outOrderId != null">#{outOrderId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStockHistory" parameterType="StockHistory">
+        update wms_stock_history
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="stockId != null">stock_id = #{stockId},</if>
+            <if test="inOrderId != null">in_order_id = #{inOrderId},</if>
+            <if test="outOrderId != null">out_order_id = #{outOrderId},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteStockHistoryById" parameterType="Long">
+        delete from wms_stock_history where id = #{id}
+    </delete>
+
+    <delete id="deleteStockHistoryByIds" parameterType="String">
+        delete from wms_stock_history where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

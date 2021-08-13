@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heyue.wms.mapper.WaitInstoreMapper">
+    
+    <resultMap type="WaitInstore" id="WaitInstoreResult">
+        <result property="id"    column="id"    />
+        <result property="orderDetailId"    column="order_detail_id"    />
+        <result property="warehouseId"    column="warehouse_id"    />
+        <result property="areaId"    column="area_id"    />
+        <result property="shelvesId"    column="shelves_id"    />
+        <result property="locationId"    column="location_id"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectWaitInstoreVo">
+        select id, order_detail_id, warehouse_id, area_id, shelves_id, location_id, update_time, status from wms_wait_instore
+    </sql>
+
+    <select id="selectWaitInstoreList" parameterType="WaitInstore" resultMap="WaitInstoreResult">
+        <include refid="selectWaitInstoreVo"/>
+        <where>  
+            <if test="orderDetailId != null "> and order_detail_id = #{orderDetailId}</if>
+        </where>
+    </select>
+    
+    <select id="selectWaitInstoreById" parameterType="Long" resultMap="WaitInstoreResult">
+        <include refid="selectWaitInstoreVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWaitInstore" parameterType="WaitInstore" useGeneratedKeys="true" keyProperty="id">
+        insert into wms_wait_instore
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderDetailId != null">order_detail_id,</if>
+            <if test="warehouseId != null">warehouse_id,</if>
+            <if test="areaId != null">area_id,</if>
+            <if test="shelvesId != null">shelves_id,</if>
+            <if test="locationId != null">location_id,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="status != null">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderDetailId != null">#{orderDetailId},</if>
+            <if test="warehouseId != null">#{warehouseId},</if>
+            <if test="areaId != null">#{areaId},</if>
+            <if test="shelvesId != null">#{shelvesId},</if>
+            <if test="locationId != null">#{locationId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWaitInstore" parameterType="WaitInstore">
+        update wms_wait_instore
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderDetailId != null">order_detail_id = #{orderDetailId},</if>
+            <if test="warehouseId != null">warehouse_id = #{warehouseId},</if>
+            <if test="areaId != null">area_id = #{areaId},</if>
+            <if test="shelvesId != null">shelves_id = #{shelvesId},</if>
+            <if test="locationId != null">location_id = #{locationId},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWaitInstoreById" parameterType="Long">
+        delete from wms_wait_instore where id = #{id}
+    </delete>
+
+    <delete id="deleteWaitInstoreByIds" parameterType="String">
+        delete from wms_wait_instore where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

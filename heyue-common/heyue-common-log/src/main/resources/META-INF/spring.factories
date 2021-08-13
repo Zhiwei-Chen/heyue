@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.heyue.common.log.service.AsyncLogService,\
+  com.heyue.common.log.aspect.LogAspect

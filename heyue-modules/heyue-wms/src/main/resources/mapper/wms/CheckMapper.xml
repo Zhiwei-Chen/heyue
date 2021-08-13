@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heyue.wms.mapper.CheckMapper">
+    
+    <resultMap type="Check" id="CheckResult">
+        <result property="id"    column="id"    />
+        <result property="materialId"    column="material_id"    />
+        <result property="number"    column="number"    />
+        <result property="warehouseId"    column="warehouse_id"    />
+        <result property="areaId"    column="area_id"    />
+        <result property="shelvesId"    column="shelves_id"    />
+        <result property="locationId"    column="location_id"    />
+        <result property="actNumber"    column="act_number"    />
+        <result property="checkStatus"    column="check_status"    />
+        <result property="result"    column="result"    />
+        <result property="inOrderId"    column="in_order_id"    />
+        <result property="outOrderId"    column="out_order_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="checkTime"    column="check_time"    />
+    </resultMap>
+
+    <sql id="selectCheckVo">
+        select id, material_id, number, warehouse_id, area_id, shelves_id, location_id, act_number, check_status, result, in_order_id, out_order_id, user_id, check_time from wms_check
+    </sql>
+
+    <select id="selectCheckList" parameterType="Check" resultMap="CheckResult">
+        <include refid="selectCheckVo"/>
+        <where>  
+            <if test="materialId != null "> and material_id = #{materialId}</if>
+        </where>
+    </select>
+    
+    <select id="selectCheckById" parameterType="Long" resultMap="CheckResult">
+        <include refid="selectCheckVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCheck" parameterType="Check" useGeneratedKeys="true" keyProperty="id">
+        insert into wms_check
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="materialId != null">material_id,</if>
+            <if test="number != null">number,</if>
+            <if test="warehouseId != null">warehouse_id,</if>
+            <if test="areaId != null">area_id,</if>
+            <if test="shelvesId != null">shelves_id,</if>
+            <if test="locationId != null">location_id,</if>
+            <if test="actNumber != null">act_number,</if>
+            <if test="checkStatus != null">check_status,</if>
+            <if test="result != null">result,</if>
+            <if test="inOrderId != null">in_order_id,</if>
+            <if test="outOrderId != null">out_order_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="checkTime != null">check_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="materialId != null">#{materialId},</if>
+            <if test="number != null">#{number},</if>
+            <if test="warehouseId != null">#{warehouseId},</if>
+            <if test="areaId != null">#{areaId},</if>
+            <if test="shelvesId != null">#{shelvesId},</if>
+            <if test="locationId != null">#{locationId},</if>
+            <if test="actNumber != null">#{actNumber},</if>
+            <if test="checkStatus != null">#{checkStatus},</if>
+            <if test="result != null">#{result},</if>
+            <if test="inOrderId != null">#{inOrderId},</if>
+            <if test="outOrderId != null">#{outOrderId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="checkTime != null">#{checkTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCheck" parameterType="Check">
+        update wms_check
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="materialId != null">material_id = #{materialId},</if>
+            <if test="number != null">number = #{number},</if>
+            <if test="warehouseId != null">warehouse_id = #{warehouseId},</if>
+            <if test="areaId != null">area_id = #{areaId},</if>
+            <if test="shelvesId != null">shelves_id = #{shelvesId},</if>
+            <if test="locationId != null">location_id = #{locationId},</if>
+            <if test="actNumber != null">act_number = #{actNumber},</if>
+            <if test="checkStatus != null">check_status = #{checkStatus},</if>
+            <if test="result != null">result = #{result},</if>
+            <if test="inOrderId != null">in_order_id = #{inOrderId},</if>
+            <if test="outOrderId != null">out_order_id = #{outOrderId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="checkTime != null">check_time = #{checkTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCheckById" parameterType="Long">
+        delete from wms_check where id = #{id}
+    </delete>
+
+    <delete id="deleteCheckByIds" parameterType="String">
+        delete from wms_check where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

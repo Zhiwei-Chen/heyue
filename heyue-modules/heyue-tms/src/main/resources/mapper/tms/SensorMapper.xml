@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heyue.tms.mapper.SensorMapper">
+    
+    <resultMap type="Sensor" id="SensorResult">
+        <result property="id"    column="id"    />
+        <result property="sensorType"    column="sensor_type"    />
+        <result property="vanId"    column="van_id"    />
+        <result property="refrigeratorId"    column="refrigerator_id"    />
+        <result property="sensorCode"    column="sensor_code"    />
+        <result property="manufacturer"    column="manufacturer"    />
+        <result property="electricity"    column="electricity"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectSensorVo">
+        select id, sensor_type, van_id, refrigerator_id, sensor_code, manufacturer, electricity, create_by, create_time, status from tms_sensor
+    </sql>
+
+    <select id="selectSensorList" parameterType="Sensor" resultMap="SensorResult">
+        <include refid="selectSensorVo"/>
+        <where>  
+            <if test="sensorType != null  and sensorType != ''"> and sensor_type = #{sensorType}</if>
+            <if test="vanId != null "> and van_id = #{vanId}</if>
+            <if test="refrigeratorId != null "> and refrigerator_id = #{refrigeratorId}</if>
+            <if test="sensorCode != null  and sensorCode != ''"> and sensor_code = #{sensorCode}</if>
+            <if test="manufacturer != null  and manufacturer != ''"> and manufacturer = #{manufacturer}</if>
+            <if test="electricity != null "> and electricity &lt; #{electricity}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectSensorById" parameterType="Long" resultMap="SensorResult">
+        <include refid="selectSensorVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSensor" parameterType="Sensor">
+        insert into tms_sensor
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="sensorType != null">sensor_type,</if>
+            <if test="vanId != null">van_id,</if>
+            <if test="refrigeratorId != null">refrigerator_id,</if>
+            <if test="sensorCode != null">sensor_code,</if>
+            <if test="manufacturer != null">manufacturer,</if>
+            <if test="electricity != null">electricity,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="status != null">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="sensorType != null">#{sensorType},</if>
+            <if test="vanId != null">#{vanId},</if>
+            <if test="refrigeratorId != null">#{refrigeratorId},</if>
+            <if test="sensorCode != null">#{sensorCode},</if>
+            <if test="manufacturer != null">#{manufacturer},</if>
+            <if test="electricity != null">#{electricity},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSensor" parameterType="Sensor">
+        update tms_sensor
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sensorType != null">sensor_type = #{sensorType},</if>
+            <if test="vanId != null">van_id = #{vanId},</if>
+            <if test="refrigeratorId != null">refrigerator_id = #{refrigeratorId},</if>
+            <if test="sensorCode != null">sensor_code = #{sensorCode},</if>
+            <if test="manufacturer != null">manufacturer = #{manufacturer},</if>
+            <if test="electricity != null">electricity = #{electricity},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSensorById" parameterType="Long">
+        delete from tms_sensor where id = #{id}
+    </delete>
+
+    <delete id="deleteSensorByIds" parameterType="String">
+        delete from tms_sensor where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

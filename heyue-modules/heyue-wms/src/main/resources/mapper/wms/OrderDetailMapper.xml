@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heyue.wms.mapper.OrderDetailMapper">
+    
+    <resultMap type="OrderDetail" id="OrderDetailResult">
+        <result property="id"    column="id"    />
+        <result property="userOrderId"    column="user_order_id"    />
+        <result property="tmsOrderId"    column="tms_order_id"    />
+        <result property="materialId"    column="material_id"    />
+        <result property="materialName"    column="material_name"    />
+        <result property="yangcaiCode"    column="yangcai_code"    />
+        <result property="code69"    column="code_69"    />
+        <result property="productName"    column="product_name"    />
+        <result property="specs"    column="specs"    />
+        <result property="manufacturer"    column="manufacturer"    />
+        <result property="number"    column="number"    />
+        <result property="unit"    column="unit"    />
+        <result property="unitPrice"    column="unit_price"    />
+        <result property="batchNumber"    column="batch_number"    />
+        <result property="manufactureDate"    column="manufacture_date"    />
+        <result property="validityDate"    column="validity_date"    />
+        <result property="packagesNumber"    column="packages_number"    />
+        <result property="registCertificateNo"    column="regist_certificate_no"    />
+        <result property="transportType"    column="transport_type"    />
+        <result property="boxNumber"    column="box_number"    />
+        <result property="storageType"    column="storage_type"    />
+        <result property="materialClassName"    column="material_class_name"    />
+        <result property="qualityFiles"    column="quality_files"    />
+        <result property="tmsOrderDetailId"    column="tms_order_detail_id"    />
+        <result property="tmsState"    column="tms_state"    />
+        <result property="wmsState"    column="wms_state"    />
+        <result property="remark"    column="remark"    />
+        <result property="qrcode"    column="qrcode"    />
+    </resultMap>
+
+    <sql id="selectOrderDetailVo">
+        select id, user_order_id, tms_order_id, material_id, material_name, yangcai_code, code_69, product_name, specs, manufacturer, number, unit, unit_price, batch_number, manufacture_date, validity_date, packages_number, regist_certificate_no, transport_type, box_number, storage_type, material_class_name, quality_files, tms_order_detail_id, tms_state, wms_state, remark, qrcode from user_order_detail
+    </sql>
+
+    <select id="selectOrderDetailList" parameterType="OrderDetail" resultMap="OrderDetailResult">
+        <include refid="selectOrderDetailVo"/>
+        <where>  
+            <if test="userOrderId != null "> and user_order_id = #{userOrderId}</if>
+            <if test="tmsOrderId != null "> and tms_order_id = #{tmsOrderId}</if>
+            <if test="materialId != null "> and material_id = #{materialId}</if>
+        </where>
+    </select>
+    
+    <select id="selectOrderDetailById" parameterType="Long" resultMap="OrderDetailResult">
+        <include refid="selectOrderDetailVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOrderDetail" parameterType="OrderDetail" useGeneratedKeys="true" keyProperty="id">
+        insert into user_order_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userOrderId != null">user_order_id,</if>
+            <if test="tmsOrderId != null">tms_order_id,</if>
+            <if test="materialId != null">material_id,</if>
+            <if test="materialName != null">material_name,</if>
+            <if test="yangcaiCode != null">yangcai_code,</if>
+            <if test="code69 != null">code_69,</if>
+            <if test="productName != null">product_name,</if>
+            <if test="specs != null">specs,</if>
+            <if test="manufacturer != null">manufacturer,</if>
+            <if test="number != null">number,</if>
+            <if test="unit != null">unit,</if>
+            <if test="unitPrice != null">unit_price,</if>
+            <if test="batchNumber != null">batch_number,</if>
+            <if test="manufactureDate != null">manufacture_date,</if>
+            <if test="validityDate != null">validity_date,</if>
+            <if test="packagesNumber != null">packages_number,</if>
+            <if test="registCertificateNo != null">regist_certificate_no,</if>
+            <if test="transportType != null">transport_type,</if>
+            <if test="boxNumber != null">box_number,</if>
+            <if test="storageType != null">storage_type,</if>
+            <if test="materialClassName != null">material_class_name,</if>
+            <if test="qualityFiles != null">quality_files,</if>
+            <if test="tmsOrderDetailId != null">tms_order_detail_id,</if>
+            <if test="tmsState != null">tms_state,</if>
+            <if test="wmsState != null">wms_state,</if>
+            <if test="remark != null">remark,</if>
+            <if test="qrcode != null">qrcode,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userOrderId != null">#{userOrderId},</if>
+            <if test="tmsOrderId != null">#{tmsOrderId},</if>
+            <if test="materialId != null">#{materialId},</if>
+            <if test="materialName != null">#{materialName},</if>
+            <if test="yangcaiCode != null">#{yangcaiCode},</if>
+            <if test="code69 != null">#{code69},</if>
+            <if test="productName != null">#{productName},</if>
+            <if test="specs != null">#{specs},</if>
+            <if test="manufacturer != null">#{manufacturer},</if>
+            <if test="number != null">#{number},</if>
+            <if test="unit != null">#{unit},</if>
+            <if test="unitPrice != null">#{unitPrice},</if>
+            <if test="batchNumber != null">#{batchNumber},</if>
+            <if test="manufactureDate != null">#{manufactureDate},</if>
+            <if test="validityDate != null">#{validityDate},</if>
+            <if test="packagesNumber != null">#{packagesNumber},</if>
+            <if test="registCertificateNo != null">#{registCertificateNo},</if>
+            <if test="transportType != null">#{transportType},</if>
+            <if test="boxNumber != null">#{boxNumber},</if>
+            <if test="storageType != null">#{storageType},</if>
+            <if test="materialClassName != null">#{materialClassName},</if>
+            <if test="qualityFiles != null">#{qualityFiles},</if>
+            <if test="tmsOrderDetailId != null">#{tmsOrderDetailId},</if>
+            <if test="tmsState != null">#{tmsState},</if>
+            <if test="wmsState != null">#{wmsState},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="qrcode != null">#{qrcode},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOrderDetail" parameterType="OrderDetail">
+        update user_order_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userOrderId != null">user_order_id = #{userOrderId},</if>
+            <if test="tmsOrderId != null">tms_order_id = #{tmsOrderId},</if>
+            <if test="materialId != null">material_id = #{materialId},</if>
+            <if test="materialName != null">material_name = #{materialName},</if>
+            <if test="yangcaiCode != null">yangcai_code = #{yangcaiCode},</if>
+            <if test="code69 != null">code_69 = #{code69},</if>
+            <if test="productName != null">product_name = #{productName},</if>
+            <if test="specs != null">specs = #{specs},</if>
+            <if test="manufacturer != null">manufacturer = #{manufacturer},</if>
+            <if test="number != null">number = #{number},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="unitPrice != null">unit_price = #{unitPrice},</if>
+            <if test="batchNumber != null">batch_number = #{batchNumber},</if>
+            <if test="manufactureDate != null">manufacture_date = #{manufactureDate},</if>
+            <if test="validityDate != null">validity_date = #{validityDate},</if>
+            <if test="packagesNumber != null">packages_number = #{packagesNumber},</if>
+            <if test="registCertificateNo != null">regist_certificate_no = #{registCertificateNo},</if>
+            <if test="transportType != null">transport_type = #{transportType},</if>
+            <if test="boxNumber != null">box_number = #{boxNumber},</if>
+            <if test="storageType != null">storage_type = #{storageType},</if>
+            <if test="materialClassName != null">material_class_name = #{materialClassName},</if>
+            <if test="qualityFiles != null">quality_files = #{qualityFiles},</if>
+            <if test="tmsOrderDetailId != null">tms_order_detail_id = #{tmsOrderDetailId},</if>
+            <if test="tmsState != null">tms_state = #{tmsState},</if>
+            <if test="wmsState != null">wms_state = #{wmsState},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="qrcode != null">qrcode = #{qrcode},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOrderDetailById" parameterType="Long">
+        delete from user_order_detail where id = #{id}
+    </delete>
+
+    <delete id="deleteOrderDetailByIds" parameterType="String">
+        delete from user_order_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

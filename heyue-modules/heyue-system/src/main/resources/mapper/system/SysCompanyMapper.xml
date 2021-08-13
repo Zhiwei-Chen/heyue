@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heyue.system.mapper.SysCompanyMapper">
+    
+    <resultMap type="SysCompany" id="SysCompanyResult">
+        <result property="qmsId"    column="qms_id"    />
+        <result property="qmsCompanyId"    column="qms_company_id"    />
+        <result property="qmsCompanyName"    column="qms_company_name"    />
+        <result property="qmsCompanyAddress"    column="qms_company_address"    />
+        <result property="qmsCompanyBusinessScope"    column="qms_company_business_scope"    />
+        <result property="qmsCompanyLegalpersonUserId"    column="qms_company_legalperson_user_id"    />
+        <result property="qmsTransportContract"    column="qms_transport_contract"    />
+        <result property="qmsContactsUserId"    column="qms_contacts_user_id"    />
+        <result property="qmsQualityFilesUrl"    column="qms_quality_files_url"    />
+        <result property="qmsCompanyStatus"    column="qms_company_status"    />
+    </resultMap>
+
+    <sql id="selectSysCompanyVo">
+        select qms_id, qms_company_id, qms_company_name, qms_company_address, qms_company_business_scope, qms_company_legalperson_user_id, qms_transport_contract, qms_contacts_user_id, qms_quality_files_url, qms_company_status from qms_company
+    </sql>
+
+    <select id="selectSysCompanyList" parameterType="SysCompany" resultMap="SysCompanyResult">
+        <include refid="selectSysCompanyVo"/>
+        <where>  
+            <if test="qmsCompanyId != null  and qmsCompanyId != ''"> and qms_company_id = #{qmsCompanyId}</if>
+            <if test="qmsCompanyName != null  and qmsCompanyName != ''"> and qms_company_name like concat('%', #{qmsCompanyName}, '%')</if>
+            <if test="qmsCompanyAddress != null  and qmsCompanyAddress != ''"> and qms_company_address = #{qmsCompanyAddress}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysCompanyById" parameterType="Long" resultMap="SysCompanyResult">
+        <include refid="selectSysCompanyVo"/>
+        where qms_id = #{qmsId}
+    </select>
+        
+    <insert id="insertSysCompany" parameterType="SysCompany">
+        insert into qms_company
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qmsId != null">qms_id,</if>
+            <if test="qmsCompanyId != null">qms_company_id,</if>
+            <if test="qmsCompanyName != null">qms_company_name,</if>
+            <if test="qmsCompanyAddress != null">qms_company_address,</if>
+            <if test="qmsCompanyBusinessScope != null">qms_company_business_scope,</if>
+            <if test="qmsCompanyLegalpersonUserId != null">qms_company_legalperson_user_id,</if>
+            <if test="qmsTransportContract != null">qms_transport_contract,</if>
+            <if test="qmsContactsUserId != null">qms_contacts_user_id,</if>
+            <if test="qmsQualityFilesUrl != null">qms_quality_files_url,</if>
+            <if test="qmsCompanyStatus != null">qms_company_status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="qmsId != null">#{qmsId},</if>
+            <if test="qmsCompanyId != null">#{qmsCompanyId},</if>
+            <if test="qmsCompanyName != null">#{qmsCompanyName},</if>
+            <if test="qmsCompanyAddress != null">#{qmsCompanyAddress},</if>
+            <if test="qmsCompanyBusinessScope != null">#{qmsCompanyBusinessScope},</if>
+            <if test="qmsCompanyLegalpersonUserId != null">#{qmsCompanyLegalpersonUserId},</if>
+            <if test="qmsTransportContract != null">#{qmsTransportContract},</if>
+            <if test="qmsContactsUserId != null">#{qmsContactsUserId},</if>
+            <if test="qmsQualityFilesUrl != null">#{qmsQualityFilesUrl},</if>
+            <if test="qmsCompanyStatus != null">#{qmsCompanyStatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysCompany" parameterType="SysCompany">
+        update qms_company
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="qmsCompanyId != null">qms_company_id = #{qmsCompanyId},</if>
+            <if test="qmsCompanyName != null">qms_company_name = #{qmsCompanyName},</if>
+            <if test="qmsCompanyAddress != null">qms_company_address = #{qmsCompanyAddress},</if>
+            <if test="qmsCompanyBusinessScope != null">qms_company_business_scope = #{qmsCompanyBusinessScope},</if>
+            <if test="qmsCompanyLegalpersonUserId != null">qms_company_legalperson_user_id = #{qmsCompanyLegalpersonUserId},</if>
+            <if test="qmsTransportContract != null">qms_transport_contract = #{qmsTransportContract},</if>
+            <if test="qmsContactsUserId != null">qms_contacts_user_id = #{qmsContactsUserId},</if>
+            <if test="qmsQualityFilesUrl != null">qms_quality_files_url = #{qmsQualityFilesUrl},</if>
+            <if test="qmsCompanyStatus != null">qms_company_status = #{qmsCompanyStatus},</if>
+        </trim>
+        where qms_id = #{qmsId}
+    </update>
+
+    <delete id="deleteSysCompanyById" parameterType="Long">
+        delete from qms_company where qms_id = #{qmsId}
+    </delete>
+
+    <delete id="deleteSysCompanyByIds" parameterType="String">
+        delete from qms_company where qms_id in 
+        <foreach item="qmsId" collection="array" open="(" separator="," close=")">
+            #{qmsId}
+        </foreach>
+    </delete>
+</mapper>

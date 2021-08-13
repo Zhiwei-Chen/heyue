@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heyue.wms.mapper.ShelvesMapper">
+    
+    <resultMap type="Shelves" id="ShelvesResult">
+        <result property="id"    column="id"    />
+        <result property="areaId"    column="area_id"    />
+        <result property="name"    column="name"    />
+        <result property="type"    column="type"    />
+        <result property="shelvesState"    column="shelves_state"    />
+        <result property="describe"    column="describe"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectShelvesVo">
+        select id, area_id, name, type, shelves_state, describe, remark, status from wms_shelves
+    </sql>
+
+    <select id="selectShelvesList" parameterType="Shelves" resultMap="ShelvesResult">
+        <include refid="selectShelvesVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectShelvesById" parameterType="Long" resultMap="ShelvesResult">
+        <include refid="selectShelvesVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertShelves" parameterType="Shelves" useGeneratedKeys="true" keyProperty="id">
+        insert into wms_shelves
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="areaId != null">area_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="shelvesState != null">shelves_state,</if>
+            <if test="describe != null">describe,</if>
+            <if test="remark != null">remark,</if>
+            <if test="status != null and status != ''">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="areaId != null">#{areaId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="shelvesState != null">#{shelvesState},</if>
+            <if test="describe != null">#{describe},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="status != null and status != ''">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateShelves" parameterType="Shelves">
+        update wms_shelves
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="areaId != null">area_id = #{areaId},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="shelvesState != null">shelves_state = #{shelvesState},</if>
+            <if test="describe != null">describe = #{describe},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteShelvesById" parameterType="Long">
+        delete from wms_shelves where id = #{id}
+    </delete>
+
+    <delete id="deleteShelvesByIds" parameterType="String">
+        delete from wms_shelves where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

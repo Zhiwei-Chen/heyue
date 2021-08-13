@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heyue.wms.mapper.InstoreMapper">
+    
+    <resultMap type="Instore" id="InstoreResult">
+        <result property="id"    column="id"    />
+        <result property="inOrderId"    column="in_order_id"    />
+        <result property="warehouseId"    column="warehouse_id"    />
+        <result property="areaId"    column="area_id"    />
+        <result property="shelvesId"    column="shelves_id"    />
+        <result property="locationId"    column="location_id"    />
+        <result property="checkUserId"    column="check_user_id"    />
+        <result property="checkTime"    column="check_time"    />
+        <result property="transportUserId"    column="transport_user_id"    />
+        <result property="transportTimeUp"    column="transport_time_up"    />
+        <result property="creatTime"    column="creat_time"    />
+        <result property="transportTimeDown"    column="transport_time_down"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectInstoreVo">
+        select id, in_order_id, warehouse_id, area_id, shelves_id, location_id, check_user_id, check_time, transport_user_id, transport_time_up, creat_time, transport_time_down, update_time from wms_instore
+    </sql>
+
+    <select id="selectInstoreList" parameterType="Instore" resultMap="InstoreResult">
+        <include refid="selectInstoreVo"/>
+        <where>  
+            <if test="inOrderId != null "> and in_order_id = #{inOrderId}</if>
+            <if test="warehouseId != null "> and warehouse_id = #{warehouseId}</if>
+            <if test="areaId != null "> and area_id = #{areaId}</if>
+            <if test="shelvesId != null "> and shelves_id = #{shelvesId}</if>
+            <if test="locationId != null "> and location_id = #{locationId}</if>
+            <if test="checkUserId != null "> and check_user_id = #{checkUserId}</if>
+            <if test="checkTime != null "> and check_time = #{checkTime}</if>
+            <if test="transportUserId != null "> and transport_user_id = #{transportUserId}</if>
+            <if test="transportTimeUp != null "> and transport_time_up = #{transportTimeUp}</if>
+            <if test="creatTime != null "> and creat_time = #{creatTime}</if>
+            <if test="transportTimeDown != null "> and transport_time_down = #{transportTimeDown}</if>
+        </where>
+    </select>
+    
+    <select id="selectInstoreById" parameterType="Long" resultMap="InstoreResult">
+        <include refid="selectInstoreVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertInstore" parameterType="Instore" useGeneratedKeys="true" keyProperty="id">
+        insert into wms_instore
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="inOrderId != null">in_order_id,</if>
+            <if test="warehouseId != null">warehouse_id,</if>
+            <if test="areaId != null">area_id,</if>
+            <if test="shelvesId != null">shelves_id,</if>
+            <if test="locationId != null">location_id,</if>
+            <if test="checkUserId != null">check_user_id,</if>
+            <if test="checkTime != null">check_time,</if>
+            <if test="transportUserId != null">transport_user_id,</if>
+            <if test="transportTimeUp != null">transport_time_up,</if>
+            <if test="creatTime != null">creat_time,</if>
+            <if test="transportTimeDown != null">transport_time_down,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="inOrderId != null">#{inOrderId},</if>
+            <if test="warehouseId != null">#{warehouseId},</if>
+            <if test="areaId != null">#{areaId},</if>
+            <if test="shelvesId != null">#{shelvesId},</if>
+            <if test="locationId != null">#{locationId},</if>
+            <if test="checkUserId != null">#{checkUserId},</if>
+            <if test="checkTime != null">#{checkTime},</if>
+            <if test="transportUserId != null">#{transportUserId},</if>
+            <if test="transportTimeUp != null">#{transportTimeUp},</if>
+            <if test="creatTime != null">#{creatTime},</if>
+            <if test="transportTimeDown != null">#{transportTimeDown},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateInstore" parameterType="Instore">
+        update wms_instore
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="inOrderId != null">in_order_id = #{inOrderId},</if>
+            <if test="warehouseId != null">warehouse_id = #{warehouseId},</if>
+            <if test="areaId != null">area_id = #{areaId},</if>
+            <if test="shelvesId != null">shelves_id = #{shelvesId},</if>
+            <if test="locationId != null">location_id = #{locationId},</if>
+            <if test="checkUserId != null">check_user_id = #{checkUserId},</if>
+            <if test="checkTime != null">check_time = #{checkTime},</if>
+            <if test="transportUserId != null">transport_user_id = #{transportUserId},</if>
+            <if test="transportTimeUp != null">transport_time_up = #{transportTimeUp},</if>
+            <if test="creatTime != null">creat_time = #{creatTime},</if>
+            <if test="transportTimeDown != null">transport_time_down = #{transportTimeDown},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteInstoreById" parameterType="Long">
+        delete from wms_instore where id = #{id}
+    </delete>
+
+    <delete id="deleteInstoreByIds" parameterType="String">
+        delete from wms_instore where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

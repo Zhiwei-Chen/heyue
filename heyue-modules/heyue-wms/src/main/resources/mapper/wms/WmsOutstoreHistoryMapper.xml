@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heyue.wms.mapper.WmsOutstoreHistoryMapper">
+    
+    <resultMap type="WmsOutstoreHistory" id="WmsOutstoreHistoryResult">
+        <result property="id"    column="id"    />
+        <result property="outOrderId"    column="out_order_id"    />
+        <result property="outOrderContent"    column="out_order_content"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="orderStatus"    column="order_status"    />
+    </resultMap>
+
+    <sql id="selectWmsOutstoreHistoryVo">
+        select id, out_order_id, out_order_content, update_time, order_status from wms_outstore_history
+    </sql>
+
+    <select id="selectWmsOutstoreHistoryList" parameterType="WmsOutstoreHistory" resultMap="WmsOutstoreHistoryResult">
+        <include refid="selectWmsOutstoreHistoryVo"/>
+        <where>  
+            <if test="outOrderId != null "> and out_order_id = #{outOrderId}</if>
+            <if test="orderStatus != null  and orderStatus != ''"> and order_status = #{orderStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectWmsOutstoreHistoryById" parameterType="Long" resultMap="WmsOutstoreHistoryResult">
+        <include refid="selectWmsOutstoreHistoryVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWmsOutstoreHistory" parameterType="WmsOutstoreHistory" useGeneratedKeys="true" keyProperty="id">
+        insert into wms_outstore_history
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="outOrderId != null">out_order_id,</if>
+            <if test="outOrderContent != null">out_order_content,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="orderStatus != null">order_status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="outOrderId != null">#{outOrderId},</if>
+            <if test="outOrderContent != null">#{outOrderContent},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="orderStatus != null">#{orderStatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWmsOutstoreHistory" parameterType="WmsOutstoreHistory">
+        update wms_outstore_history
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="outOrderId != null">out_order_id = #{outOrderId},</if>
+            <if test="outOrderContent != null">out_order_content = #{outOrderContent},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="orderStatus != null">order_status = #{orderStatus},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWmsOutstoreHistoryById" parameterType="Long">
+        delete from wms_outstore_history where id = #{id}
+    </delete>
+
+    <delete id="deleteWmsOutstoreHistoryByIds" parameterType="String">
+        delete from wms_outstore_history where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.heyue</groupId>
+        <artifactId>heyue</artifactId>
+        <version>2.5.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <modules>
+        <module>heyue-system</module>
+        <module>heyue-gen</module>
+        <module>heyue-job</module>
+        <module>heyue-file</module>
+        <module>heyue-account</module>
+        <module>heyue-tms</module>
+        <module>heyue-wms</module>
+    </modules>
+
+    <artifactId>heyue-modules</artifactId>
+    <packaging>pom</packaging>
+
+    <description>
+        heyue-modules业务模块
+    </description>
+
+</project>

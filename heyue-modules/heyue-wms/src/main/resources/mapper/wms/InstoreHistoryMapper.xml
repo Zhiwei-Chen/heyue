@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heyue.wms.mapper.InstoreHistoryMapper">
+    
+    <resultMap type="InstoreHistory" id="InstoreHistoryResult">
+        <result property="id"    column="id"    />
+        <result property="inOrderId"    column="in_order_id"    />
+        <result property="inOrderContent"    column="in_order_content"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="orderStatus"    column="order_status"    />
+    </resultMap>
+
+    <sql id="selectInstoreHistoryVo">
+        select id, in_order_id, in_order_content, update_time, order_status from wms_instore_history
+    </sql>
+
+    <select id="selectInstoreHistoryList" parameterType="InstoreHistory" resultMap="InstoreHistoryResult">
+        <include refid="selectInstoreHistoryVo"/>
+        <where>  
+            <if test="inOrderId != null "> and in_order_id = #{inOrderId}</if>
+        </where>
+    </select>
+    
+    <select id="selectInstoreHistoryById" parameterType="Long" resultMap="InstoreHistoryResult">
+        <include refid="selectInstoreHistoryVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertInstoreHistory" parameterType="InstoreHistory" useGeneratedKeys="true" keyProperty="id">
+        insert into wms_instore_history
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="inOrderId != null">in_order_id,</if>
+            <if test="inOrderContent != null">in_order_content,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="orderStatus != null">order_status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="inOrderId != null">#{inOrderId},</if>
+            <if test="inOrderContent != null">#{inOrderContent},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="orderStatus != null">#{orderStatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateInstoreHistory" parameterType="InstoreHistory">
+        update wms_instore_history
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="inOrderId != null">in_order_id = #{inOrderId},</if>
+            <if test="inOrderContent != null">in_order_content = #{inOrderContent},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="orderStatus != null">order_status = #{orderStatus},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteInstoreHistoryById" parameterType="Long">
+        delete from wms_instore_history where id = #{id}
+    </delete>
+
+    <delete id="deleteInstoreHistoryByIds" parameterType="String">
+        delete from wms_instore_history where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

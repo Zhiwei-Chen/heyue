@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heyue.wms.mapper.UserOrderMapper">
+    
+    <resultMap type="UserOrder" id="UserOrderResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="type"    column="type"    />
+        <result property="status"    column="status"    />
+        <result property="allPrice"    column="all_price"    />
+        <result property="allPayPrice"    column="all_pay_price"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="bookingPickupTime"    column="booking_pickup_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="userPhone"    column="user_phone"    />
+        <result property="sendUserId"    column="send_user_id"    />
+        <result property="sendCompanyId"    column="send_company_id"    />
+        <result property="sendCompanyName"    column="send_company_name"    />
+        <result property="sendAddress"    column="send_address"    />
+        <result property="customerCompanyId"    column="customer_company_id"    />
+        <result property="customerUserId"    column="customer_user_id"    />
+        <result property="customerCompanyName"    column="customer_company_name"    />
+        <result property="customerAddress"    column="customer_address"    />
+        <result property="driverId"    column="driver_id"    />
+        <result property="driverPhone"    column="driver_phone"    />
+        <result property="driverName"    column="driver_name"    />
+        <result property="vanId"    column="van_id"    />
+        <result property="vanNumber"    column="van_number"    />
+        <result property="paymentId"    column="payment_id"    />
+        <result property="paymentState"    column="payment_state"    />
+        <result property="paymentClass"    column="payment_class"    />
+        <result property="paymentTime"    column="payment_time"    />
+        <result property="wmsPrice"    column="wms_price"    />
+        <result property="wmsCost"    column="wms_cost"    />
+        <result property="wmsType"    column="wms_type"    />
+        <result property="tmsPrice"    column="tms_price"    />
+        <result property="tmsCost"    column="tms_cost"    />
+        <result property="tmsType"    column="tms_type"    />
+        <result property="remark"    column="remark"    />
+        <result property="qrcode"    column="qrcode"    />
+    </resultMap>
+
+    <sql id="selectUserOrderVo">
+        select id, code, type, status, all_price, all_pay_price, update_by, create_time, update_time, booking_pickup_time, user_id, user_name, user_phone, send_user_id, send_company_id, send_company_name, send_address, customer_company_id, customer_user_id, customer_company_name, customer_address, driver_id, driver_phone, driver_name, van_id, van_number, payment_id, payment_state, payment_class, payment_time, wms_price, wms_cost, wms_type, tms_price, tms_cost, tms_type, remark, qrcode from user_order
+    </sql>
+
+    <select id="selectUserOrderList" parameterType="UserOrder" resultMap="UserOrderResult">
+        <include refid="selectUserOrderVo"/>
+        <where>  
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="bookingPickupTime != null "> and booking_pickup_time = #{bookingPickupTime}</if>
+            <if test="paymentClass != null  and paymentClass != ''"> and payment_class = #{paymentClass}</if>
+            <if test="tmsType != null  and tmsType != ''"> and tms_type = #{tmsType}</if>
+        </where>
+    </select>
+    
+    <select id="selectUserOrderById" parameterType="Long" resultMap="UserOrderResult">
+        <include refid="selectUserOrderVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertUserOrder" parameterType="UserOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into user_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code != null and code != ''">code,</if>
+            <if test="type != null">type,</if>
+            <if test="status != null">status,</if>
+            <if test="allPrice != null">all_price,</if>
+            <if test="allPayPrice != null">all_pay_price,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="bookingPickupTime != null">booking_pickup_time,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="userPhone != null">user_phone,</if>
+            <if test="sendUserId != null">send_user_id,</if>
+            <if test="sendCompanyId != null">send_company_id,</if>
+            <if test="sendCompanyName != null">send_company_name,</if>
+            <if test="sendAddress != null">send_address,</if>
+            <if test="customerCompanyId != null">customer_company_id,</if>
+            <if test="customerUserId != null">customer_user_id,</if>
+            <if test="customerCompanyName != null">customer_company_name,</if>
+            <if test="customerAddress != null">customer_address,</if>
+            <if test="driverId != null">driver_id,</if>
+            <if test="driverPhone != null">driver_phone,</if>
+            <if test="driverName != null">driver_name,</if>
+            <if test="vanId != null">van_id,</if>
+            <if test="vanNumber != null">van_number,</if>
+            <if test="paymentId != null">payment_id,</if>
+            <if test="paymentState != null">payment_state,</if>
+            <if test="paymentClass != null">payment_class,</if>
+            <if test="paymentTime != null">payment_time,</if>
+            <if test="wmsPrice != null">wms_price,</if>
+            <if test="wmsCost != null">wms_cost,</if>
+            <if test="wmsType != null">wms_type,</if>
+            <if test="tmsPrice != null">tms_price,</if>
+            <if test="tmsCost != null">tms_cost,</if>
+            <if test="tmsType != null">tms_type,</if>
+            <if test="remark != null">remark,</if>
+            <if test="qrcode != null">qrcode,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code != null and code != ''">#{code},</if>
+            <if test="type != null">#{type},</if>
+            <if test="status != null">#{status},</if>
+            <if test="allPrice != null">#{allPrice},</if>
+            <if test="allPayPrice != null">#{allPayPrice},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="bookingPickupTime != null">#{bookingPickupTime},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="userPhone != null">#{userPhone},</if>
+            <if test="sendUserId != null">#{sendUserId},</if>
+            <if test="sendCompanyId != null">#{sendCompanyId},</if>
+            <if test="sendCompanyName != null">#{sendCompanyName},</if>
+            <if test="sendAddress != null">#{sendAddress},</if>
+            <if test="customerCompanyId != null">#{customerCompanyId},</if>
+            <if test="customerUserId != null">#{customerUserId},</if>
+            <if test="customerCompanyName != null">#{customerCompanyName},</if>
+            <if test="customerAddress != null">#{customerAddress},</if>
+            <if test="driverId != null">#{driverId},</if>
+            <if test="driverPhone != null">#{driverPhone},</if>
+            <if test="driverName != null">#{driverName},</if>
+            <if test="vanId != null">#{vanId},</if>
+            <if test="vanNumber != null">#{vanNumber},</if>
+            <if test="paymentId != null">#{paymentId},</if>
+            <if test="paymentState != null">#{paymentState},</if>
+            <if test="paymentClass != null">#{paymentClass},</if>
+            <if test="paymentTime != null">#{paymentTime},</if>
+            <if test="wmsPrice != null">#{wmsPrice},</if>
+            <if test="wmsCost != null">#{wmsCost},</if>
+            <if test="wmsType != null">#{wmsType},</if>
+            <if test="tmsPrice != null">#{tmsPrice},</if>
+            <if test="tmsCost != null">#{tmsCost},</if>
+            <if test="tmsType != null">#{tmsType},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="qrcode != null">#{qrcode},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUserOrder" parameterType="UserOrder">
+        update user_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null and code != ''">code = #{code},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="allPrice != null">all_price = #{allPrice},</if>
+            <if test="allPayPrice != null">all_pay_price = #{allPayPrice},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="bookingPickupTime != null">booking_pickup_time = #{bookingPickupTime},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="userPhone != null">user_phone = #{userPhone},</if>
+            <if test="sendUserId != null">send_user_id = #{sendUserId},</if>
+            <if test="sendCompanyId != null">send_company_id = #{sendCompanyId},</if>
+            <if test="sendCompanyName != null">send_company_name = #{sendCompanyName},</if>
+            <if test="sendAddress != null">send_address = #{sendAddress},</if>
+            <if test="customerCompanyId != null">customer_company_id = #{customerCompanyId},</if>
+            <if test="customerUserId != null">customer_user_id = #{customerUserId},</if>
+            <if test="customerCompanyName != null">customer_company_name = #{customerCompanyName},</if>
+            <if test="customerAddress != null">customer_address = #{customerAddress},</if>
+            <if test="driverId != null">driver_id = #{driverId},</if>
+            <if test="driverPhone != null">driver_phone = #{driverPhone},</if>
+            <if test="driverName != null">driver_name = #{driverName},</if>
+            <if test="vanId != null">van_id = #{vanId},</if>
+            <if test="vanNumber != null">van_number = #{vanNumber},</if>
+            <if test="paymentId != null">payment_id = #{paymentId},</if>
+            <if test="paymentState != null">payment_state = #{paymentState},</if>
+            <if test="paymentClass != null">payment_class = #{paymentClass},</if>
+            <if test="paymentTime != null">payment_time = #{paymentTime},</if>
+            <if test="wmsPrice != null">wms_price = #{wmsPrice},</if>
+            <if test="wmsCost != null">wms_cost = #{wmsCost},</if>
+            <if test="wmsType != null">wms_type = #{wmsType},</if>
+            <if test="tmsPrice != null">tms_price = #{tmsPrice},</if>
+            <if test="tmsCost != null">tms_cost = #{tmsCost},</if>
+            <if test="tmsType != null">tms_type = #{tmsType},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="qrcode != null">qrcode = #{qrcode},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUserOrderById" parameterType="Long">
+        delete from user_order where id = #{id}
+    </delete>
+
+    <delete id="deleteUserOrderByIds" parameterType="String">
+        delete from user_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

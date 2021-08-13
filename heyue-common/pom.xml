@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.heyue</groupId>
+        <artifactId>heyue</artifactId>
+        <version>2.5.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <modules>
+        <module>heyue-common-log</module>
+        <module>heyue-common-core</module>
+        <module>heyue-common-redis</module>
+        <module>heyue-common-swagger</module>
+        <module>heyue-common-security</module>
+        <module>heyue-common-datascope</module>
+		<module>heyue-common-datasource</module>
+    </modules>
+
+    <artifactId>heyue-common</artifactId>
+    <packaging>pom</packaging>
+
+    <description>
+	    heyue-common通用模块
+    </description>
+
+</project>
